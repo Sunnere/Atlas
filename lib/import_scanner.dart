@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'import_reference.dart';
+import 'import_type.dart';
 
 /// Scans Dart files for import statements.
 class ImportScanner {
@@ -27,14 +28,33 @@ class ImportScanner {
         continue;
       }
 
+      final target = match.group(1)!;
+
       imports.add(
         ImportReference(
           source: file.path,
-          target: match.group(1)!,
+          target: target,
+          type: _classify(target),
         ),
       );
     }
 
     return imports;
+  }
+
+  ImportType _classify(String target) {
+    if (target.startsWith('dart:')) {
+      return ImportType.dartSdk;
+    }
+
+    if (target.startsWith('package:flutter/')) {
+      return ImportType.flutter;
+    }
+
+    if (target.startsWith('package:')) {
+      return ImportType.package;
+    }
+
+    return ImportType.local;
   }
 }
