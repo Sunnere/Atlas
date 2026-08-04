@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:atlas/core/repository_snapshot_builder.dart';
 import 'package:atlas/scanner/repository_scanner.dart';
 
 Future<void> main(List<String> args) async {
@@ -38,7 +39,15 @@ Future<void> _runScan(String root) async {
   print('Atlas Repository Scanner');
   print('');
 
-  final model = await scanner.scan(root);
+  final repository = await scanner.scan(root);
+
+  // New architecture:
+  // RepositoryModel -> RepositorySnapshot
+  final snapshot = const RepositorySnapshotBuilder().build(
+    repository,
+  );
+
+  final model = snapshot.repository;
 
   print('Repository : ${model.rootPath}');
   print('Files      : ${model.totalFiles}');
