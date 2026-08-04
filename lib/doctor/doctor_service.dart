@@ -1,4 +1,5 @@
 import '../core/models/repository_model.dart';
+import '../core/models/repository_snapshot.dart';
 import '../import_reference.dart';
 import '../import_summary.dart';
 import 'doctor_report.dart';
@@ -12,6 +13,29 @@ class DoctorService {
   }) {
     final summary = ImportSummary.fromImports(imports);
 
+    return _buildReport(
+      repository: repository,
+      summary: summary,
+    );
+  }
+
+  /// Future entry point for Atlas Core.
+  DoctorReport analyzeSnapshot(
+    RepositorySnapshot snapshot, {
+    required List<ImportReference> imports,
+  }) {
+    final summary = ImportSummary.fromImports(imports);
+
+    return _buildReport(
+      repository: snapshot.repository,
+      summary: summary,
+    );
+  }
+
+  DoctorReport _buildReport({
+    required RepositoryModel repository,
+    required ImportSummary summary,
+  }) {
     final dartFiles = repository.files
         .where((file) => file.extension == '.dart')
         .length;
