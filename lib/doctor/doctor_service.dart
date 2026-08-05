@@ -11,24 +11,20 @@ class DoctorService {
     required RepositoryModel repository,
     required List<ImportReference> imports,
   }) {
-    final summary = ImportSummary.fromImports(imports);
-
     return _buildReport(
       repository: repository,
-      summary: summary,
+      summary: ImportSummary.fromImports(imports),
     );
   }
 
-  /// Future entry point for Atlas Core.
-  DoctorReport analyzeSnapshot(
-    RepositorySnapshot snapshot, {
+  /// Future Atlas Core entry point.
+  DoctorReport analyzeSnapshot({
+    required RepositorySnapshot snapshot,
     required List<ImportReference> imports,
   }) {
-    final summary = ImportSummary.fromImports(imports);
-
     return _buildReport(
       repository: snapshot.repository,
-      summary: summary,
+      summary: ImportSummary.fromImports(imports),
     );
   }
 
