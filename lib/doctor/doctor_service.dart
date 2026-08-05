@@ -1,5 +1,4 @@
 import '../core/models/repository_model.dart';
-import '../core/models/repository_snapshot.dart';
 import '../import_reference.dart';
 import '../import_summary.dart';
 import 'doctor_report.dart';
@@ -13,17 +12,6 @@ class DoctorService {
   }) {
     return _buildReport(
       repository: repository,
-      summary: ImportSummary.fromImports(imports),
-    );
-  }
-
-  /// Future Atlas Core entry point.
-  DoctorReport analyzeSnapshot({
-    required RepositorySnapshot snapshot,
-    required List<ImportReference> imports,
-  }) {
-    return _buildReport(
-      repository: snapshot.repository,
       summary: ImportSummary.fromImports(imports),
     );
   }
