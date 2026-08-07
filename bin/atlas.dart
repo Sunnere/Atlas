@@ -9,7 +9,7 @@ Future<void> main(List<String> args) async {
   switch (command) {
     case 'scan':
       await _runScan(
-        args.length > 1 ? args[1] : Directory.current.path,
+        _repositoryRoot(args),
       );
       break;
 
@@ -27,6 +27,14 @@ Future<void> main(List<String> args) async {
       _printHelp();
       exitCode = 64;
   }
+}
+
+String _repositoryRoot(List<String> args) {
+  if (args.length > 1) {
+    return args[1];
+  }
+
+  return Directory.current.path;
 }
 
 Future<void> _runScan(String root) async {
