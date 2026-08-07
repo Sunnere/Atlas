@@ -14,11 +14,7 @@ Future<void> main(List<String> args) async {
       break;
 
     case 'doctor':
-      print('🏛 Atlas Engineering Doctor');
-      print('');
-      print('Doctor MVP is under construction.');
-      print('');
-      print('Run: dart run bin/atlas.dart scan');
+      _doctorNotAvailable();
       break;
 
     case 'help':
@@ -41,8 +37,6 @@ Future<void> _runScan(String root) async {
 
   final repository = await scanner.scan(root);
 
-  // New architecture:
-  // RepositoryModel -> RepositorySnapshot
   final snapshot = const RepositorySnapshotBuilder().build(
     repository,
   );
@@ -65,6 +59,19 @@ Future<void> _runScan(String root) async {
 
   print('');
   print('Completed in ${model.scanDuration.inMilliseconds} ms');
+}
+
+void _doctorNotAvailable() {
+  print('🏛 Atlas Engineering Doctor');
+  print('');
+  print('Doctor is temporarily unavailable during the');
+  print('migration from the legacy scanner to Atlas Core.');
+  print('');
+  print('Current status:');
+  print('  ✓ New RepositoryScanner');
+  print('  ✓ RepositorySnapshot');
+  print('  ⏳ Doctor migration');
+  print('');
 }
 
 void _printHelp() {
