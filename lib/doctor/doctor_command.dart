@@ -10,7 +10,7 @@ class DoctorCommand {
     required RepositoryModel repository,
     required List<ImportReference> imports,
   }) {
-    final report = DoctorService().analyze(
+    final report = const DoctorService().analyze(
       repository: repository,
       imports: imports,
     );
@@ -40,6 +40,17 @@ class DoctorCommand {
 
     print('Health Score');
     print('  ${report.healthScore}/100');
+    print('');
+
+    print('Observations');
+
+    for (final observation in report.observations) {
+      print('');
+      print('  ${observation.title}');
+      print('    Evidence      : ${observation.evidence}');
+      print('    Recommendation: ${observation.recommendation}');
+    }
+
     print('');
   }
 }

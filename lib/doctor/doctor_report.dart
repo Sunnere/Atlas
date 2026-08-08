@@ -1,3 +1,5 @@
+import 'doctor_observation.dart';
+
 class DoctorReport {
   const DoctorReport({
     required this.repositoryPath,
@@ -8,6 +10,7 @@ class DoctorReport {
     required this.flutterImports,
     required this.dartSdkImports,
     required this.healthScore,
+    required this.observations,
   });
 
   final String repositoryPath;
@@ -21,4 +24,6 @@ class DoctorReport {
   final int dartSdkImports;
 
   final int healthScore;
+
+  final List<DoctorObservation> observations;
 }
