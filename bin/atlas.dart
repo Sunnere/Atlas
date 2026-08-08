@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:atlas/core/models/repository_snapshot.dart';
 import 'package:atlas/core/repository_snapshot_builder.dart';
+import 'package:atlas/doctor/doctor_command.dart';
 import 'package:atlas/scanner/repository_scanner.dart';
 
 Future<void> main(List<String> args) async {
@@ -14,7 +16,9 @@ Future<void> main(List<String> args) async {
       break;
 
     case 'doctor':
-      _doctorNotAvailable();
+      await _runDoctor(
+        _repositoryRoot(args),
+      );
       break;
 
     case 'help':
@@ -37,24 +41,28 @@ String _repositoryRoot(List<String> args) {
   return Directory.current.path;
 }
 
-Future<void> _runScan(String root) async {
+Future<RepositorySnapshot> _buildSnapshot(String root) async {
   final scanner = RepositoryScanner();
-
-  print('Atlas Repository Scanner');
-  print('');
 
   final repository = await scanner.scan(root);
 
-  final snapshot = const RepositorySnapshotBuilder().build(
+  return const RepositorySnapshotBuilder().build(
     repository,
     imports: scanner.imports,
   );
+}
 
+Future<void> _runScan(String root) async {
+  print('Atlas Repository Scanner');
+  print('');
+
+  final snapshot = await _buildSnapshot(root);
   final model = snapshot.repository;
 
   print('Repository : ${model.rootPath}');
   print('Files      : ${model.totalFiles}');
   print('Directories: ${model.totalDirectories}');
+  print('Imports    : ${snapshot.imports.length}');
   print('');
 
   print('Languages');
@@ -70,17 +78,13 @@ Future<void> _runScan(String root) async {
   print('Completed in ${model.scanDuration.inMilliseconds} ms');
 }
 
-void _doctorNotAvailable() {
-  print('🏛 Atlas Engineering Doctor');
-  print('');
-  print('Doctor is temporarily unavailable during the');
-  print('migration from the legacy scanner to Atlas Core.');
-  print('');
-  print('Current status:');
-  print('  ✓ New RepositoryScanner');
-  print('  ✓ RepositorySnapshot');
-  print('  ⏳ Doctor migration');
-  print('');
+Future<void> _runDoctor(String root) async {
+  final snapshot = await _buildSnapshot(root);
+
+  const DoctorCommand().run(
+    repository: snapshot.repository,
+    imports: snapshot.imports,
+  );
 }
 
 void _printHelp() {
@@ -88,6 +92,6 @@ void _printHelp() {
   print('');
   print('Usage:');
   print('  dart run bin/atlas.dart scan [path]');
-  print('  dart run bin/atlas.dart doctor');
+  print('  dart run bin/atlas.dart doctor [path]');
   print('  dart run bin/atlas.dart help');
 }
