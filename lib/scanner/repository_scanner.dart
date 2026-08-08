@@ -2,14 +2,28 @@ import 'dart:io';
 
 import '../core/models/file_info.dart';
 import '../core/models/repository_model.dart';
+import '../import_reference.dart';
+import '../import_scanner.dart';
 import 'language_detector.dart';
 
 class RepositoryScanner {
+  RepositoryScanner({
+    this.importScanner = const ImportScanner(),
+  });
+
+  final ImportScanner importScanner;
+
+  final List<ImportReference> _imports = [];
+
+  List<ImportReference> get imports => List.unmodifiable(_imports);
+
   Future<RepositoryModel> scan(String rootPath) async {
     final stopwatch = Stopwatch()..start();
 
     final files = <FileInfo>[];
     var directories = 0;
+
+    _imports.clear();
 
     await for (final entity
         in Directory(rootPath).list(recursive: true, followLinks: false)) {
@@ -30,6 +44,12 @@ class RepositoryScanner {
           language: LanguageDetector.detect(extension),
         ),
       );
+
+      if (extension == '.dart') {
+        _imports.addAll(
+          importScanner.scan(entity),
+        );
+      }
     }
 
     stopwatch.stop();

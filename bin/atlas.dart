@@ -47,6 +47,7 @@ Future<void> _runScan(String root) async {
 
   final snapshot = const RepositorySnapshotBuilder().build(
     repository,
+    imports: scanner.imports,
   );
 
   final model = snapshot.repository;
