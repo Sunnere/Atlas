@@ -4,6 +4,8 @@ import '../core/models/file_info.dart';
 import '../core/models/repository_model.dart';
 import '../import_reference.dart';
 import '../import_scanner.dart';
+import '../repository_inventory.dart';
+import '../repository_item.dart';
 import 'language_detector.dart';
 
 class RepositoryScanner {
@@ -14,8 +16,11 @@ class RepositoryScanner {
   final ImportScanner importScanner;
 
   final List<ImportReference> _imports = [];
+  RepositoryInventory? _inventory;
 
   List<ImportReference> get imports => List.unmodifiable(_imports);
+
+  RepositoryInventory? get inventory => _inventory;
 
   Future<RepositoryModel> scan(String rootPath) async {
     final stopwatch = Stopwatch()..start();
@@ -24,6 +29,8 @@ class RepositoryScanner {
     var directories = 0;
 
     _imports.clear();
+
+    final inventory = RepositoryInventory();
 
     await for (final entity
         in Directory(rootPath).list(recursive: true, followLinks: false)) {
@@ -45,12 +52,20 @@ class RepositoryScanner {
         ),
       );
 
+      inventory.add(
+        RepositoryItem(
+          path: entity.path,
+        ),
+      );
+
       if (extension == '.dart') {
         _imports.addAll(
           importScanner.scan(entity),
         );
       }
     }
+
+    _inventory = inventory;
 
     stopwatch.stop();
 

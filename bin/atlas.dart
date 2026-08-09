@@ -49,6 +49,7 @@ Future<RepositorySnapshot> _buildSnapshot(String root) async {
   return const RepositorySnapshotBuilder().build(
     repository,
     imports: scanner.imports,
+    inventory: scanner.inventory,
   );
 }
 
