@@ -2,8 +2,10 @@ import 'dart:io';
 
 import '../core/models/file_info.dart';
 import '../core/models/repository_model.dart';
+import '../graph_builder.dart';
 import '../import_reference.dart';
 import '../import_scanner.dart';
+import '../knowledge_graph.dart';
 import '../repository_inventory.dart';
 import '../repository_item.dart';
 import 'language_detector.dart';
@@ -17,10 +19,13 @@ class RepositoryScanner {
 
   final List<ImportReference> _imports = [];
   RepositoryInventory? _inventory;
+  KnowledgeGraph? _graph;
 
   List<ImportReference> get imports => List.unmodifiable(_imports);
 
   RepositoryInventory? get inventory => _inventory;
+
+  KnowledgeGraph? get graph => _graph;
 
   Future<RepositoryModel> scan(String rootPath) async {
     final stopwatch = Stopwatch()..start();
@@ -65,7 +70,13 @@ class RepositoryScanner {
       }
     }
 
+    final graph = const GraphBuilder().build(
+      inventory,
+      imports: _imports,
+    );
+
     _inventory = inventory;
+    _graph = graph;
 
     stopwatch.stop();
 

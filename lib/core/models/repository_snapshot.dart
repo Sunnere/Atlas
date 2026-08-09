@@ -1,21 +1,20 @@
 import '../../import_reference.dart';
+import '../../knowledge_graph.dart';
 import '../../repository_inventory.dart';
 import 'repository_model.dart';
 
-/// Immutable snapshot of everything Atlas knows about a repository.
+/// Snapshot of the knowledge discovered for a repository.
 ///
-/// The snapshot is the contract shared between scanners,
-/// analysis services and commands.
+/// The snapshot is the shared contract between repository scanning,
+/// analysis services and Atlas commands.
 ///
-/// During the migration it contains the RepositoryModel,
-/// import references and repository inventory.
-/// Additional knowledge (graph, metrics...)
-/// will be added in later commits.
+/// Knowledge is migrated into the snapshot incrementally.
 class RepositorySnapshot {
   const RepositorySnapshot({
     required this.repository,
     required this.imports,
     required this.inventory,
+    required this.graph,
   });
 
   final RepositoryModel repository;
@@ -23,4 +22,6 @@ class RepositorySnapshot {
   final List<ImportReference> imports;
 
   final RepositoryInventory inventory;
+
+  final KnowledgeGraph graph;
 }
