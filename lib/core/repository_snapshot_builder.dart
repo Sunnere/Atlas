@@ -1,6 +1,7 @@
 import '../import_reference.dart';
 import '../knowledge_graph.dart';
 import '../repository_inventory.dart';
+import '../repository_stats.dart';
 import 'models/repository_model.dart';
 import 'models/repository_snapshot.dart';
 
@@ -18,12 +19,25 @@ class RepositorySnapshotBuilder {
     List<ImportReference> imports = const [],
     RepositoryInventory? inventory,
     KnowledgeGraph? graph,
+    RepositoryStats? stats,
   }) {
     return RepositorySnapshot(
       repository: repository,
       imports: List.unmodifiable(imports),
       inventory: inventory ?? RepositoryInventory(),
       graph: graph ?? KnowledgeGraph(),
+      stats: stats ??
+          RepositoryStats(
+            directories: repository.totalDirectories,
+            dartFiles:
+                repository.files.where((file) => file.extension == '.dart').length,
+            testFiles:
+                inventory?.tests.length ?? 0,
+            pubspecFiles: inventory?.configs
+                    .where((item) => item.name == 'pubspec.yaml')
+                    .length ??
+                0,
+          ),
     );
   }
 }

@@ -1,6 +1,7 @@
 import '../../import_reference.dart';
 import '../../knowledge_graph.dart';
 import '../../repository_inventory.dart';
+import '../../repository_stats.dart';
 import 'repository_model.dart';
 
 /// Snapshot of the knowledge discovered for a repository.
@@ -15,6 +16,7 @@ class RepositorySnapshot {
     required this.imports,
     required this.inventory,
     required this.graph,
+    required this.stats,
   });
 
   final RepositoryModel repository;
@@ -24,4 +26,6 @@ class RepositorySnapshot {
   final RepositoryInventory inventory;
 
   final KnowledgeGraph graph;
+
+  final RepositoryStats stats;
 }

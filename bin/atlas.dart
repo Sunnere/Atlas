@@ -51,6 +51,7 @@ Future<RepositorySnapshot> _buildSnapshot(String root) async {
     imports: scanner.imports,
     inventory: scanner.inventory,
     graph: scanner.graph,
+    stats: scanner.stats,
   );
 }
 

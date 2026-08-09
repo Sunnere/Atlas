@@ -8,6 +8,7 @@ import '../import_scanner.dart';
 import '../knowledge_graph.dart';
 import '../repository_inventory.dart';
 import '../repository_item.dart';
+import '../repository_stats.dart';
 import 'language_detector.dart';
 
 class RepositoryScanner {
@@ -20,12 +21,15 @@ class RepositoryScanner {
   final List<ImportReference> _imports = [];
   RepositoryInventory? _inventory;
   KnowledgeGraph? _graph;
+  RepositoryStats? _stats;
 
   List<ImportReference> get imports => List.unmodifiable(_imports);
 
   RepositoryInventory? get inventory => _inventory;
 
   KnowledgeGraph? get graph => _graph;
+
+  RepositoryStats? get stats => _stats;
 
   Future<RepositoryModel> scan(String rootPath) async {
     final stopwatch = Stopwatch()..start();
@@ -75,8 +79,20 @@ class RepositoryScanner {
       imports: _imports,
     );
 
+    final stats = RepositoryStats(
+      directories: directories,
+      dartFiles: inventory.items
+          .where((item) => item.extension == '.dart')
+          .length,
+      testFiles: inventory.tests.length,
+      pubspecFiles: inventory.configs
+          .where((item) => item.name == 'pubspec.yaml')
+          .length,
+    );
+
     _inventory = inventory;
     _graph = graph;
+    _stats = stats;
 
     stopwatch.stop();
 
