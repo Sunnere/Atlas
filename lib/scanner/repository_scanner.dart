@@ -8,7 +8,7 @@ import '../import_scanner.dart';
 import '../knowledge_graph.dart';
 import '../core/models/repository_inventory.dart';
 import '../core/models/repository_item.dart';
-import '../repository_stats.dart';
+import '../core/models/repository_stats.dart';
 import 'language_detector.dart';
 
 class RepositoryScanner {

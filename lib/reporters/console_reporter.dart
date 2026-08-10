@@ -1,4 +1,4 @@
-import 'package:atlas/repository_stats.dart';
+import 'package:atlas/core/models/repository_stats.dart';
 
 class ConsoleReporter {
   void printSummary(RepositoryStats stats) {

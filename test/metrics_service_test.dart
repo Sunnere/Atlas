@@ -1,5 +1,5 @@
 import 'package:atlas/core/metrics_service.dart';
-import 'package:atlas/repository_stats.dart';
+import 'package:atlas/core/models/repository_stats.dart';
 import 'package:test/test.dart';
 
 void main() {

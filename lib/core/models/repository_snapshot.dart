@@ -1,7 +1,7 @@
 import '../../import_reference.dart';
 import '../../knowledge_graph.dart';
 import 'repository_inventory.dart';
-import '../../repository_stats.dart';
+import 'repository_stats.dart';
 import 'repository_model.dart';
 
 /// Snapshot of the knowledge discovered for a repository.
