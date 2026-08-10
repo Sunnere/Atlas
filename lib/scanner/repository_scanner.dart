@@ -6,8 +6,8 @@ import '../graph_builder.dart';
 import '../import_reference.dart';
 import '../import_scanner.dart';
 import '../knowledge_graph.dart';
-import '../repository_inventory.dart';
-import '../repository_item.dart';
+import '../core/models/repository_inventory.dart';
+import '../core/models/repository_item.dart';
 import '../repository_stats.dart';
 import 'language_detector.dart';
 

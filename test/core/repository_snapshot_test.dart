@@ -1,7 +1,7 @@
 import 'package:atlas/core/models/repository_model.dart';
 import 'package:atlas/core/repository_snapshot_builder.dart';
-import 'package:atlas/repository_inventory.dart';
-import 'package:atlas/repository_item.dart';
+import 'package:atlas/core/models/repository_inventory.dart';
+import 'package:atlas/core/models/repository_item.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -2,8 +2,8 @@ import 'package:atlas/graph_node.dart';
 import 'package:atlas/import_reference.dart';
 import 'package:atlas/knowledge_graph.dart';
 import 'package:atlas/relationship_builder.dart';
-import 'package:atlas/repository_inventory.dart';
-import 'package:atlas/repository_item.dart';
+import 'package:atlas/core/models/repository_inventory.dart';
+import 'package:atlas/core/models/repository_item.dart';
 
 /// Builds a KnowledgeGraph from a RepositoryInventory.
 class GraphBuilder {

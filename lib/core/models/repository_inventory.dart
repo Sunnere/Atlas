@@ -1,4 +1,4 @@
-import 'package:atlas/repository_item.dart';
+import 'package:atlas/core/models/repository_item.dart';
 
 class RepositoryInventory {
   RepositoryInventory({
