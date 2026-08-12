@@ -2,6 +2,7 @@ import 'package:test/test.dart';
 
 import 'package:atlas/core/contracts/branch_state.dart';
 import 'package:atlas/core/services/executive_decision_engine.dart';
+import 'package:atlas/core/services/executive_state_aggregator.dart';
 
 void main() {
   group('Executive decision flow', () {
@@ -23,20 +24,24 @@ void main() {
         ),
       ];
 
+      const aggregator = ExecutiveStateAggregator();
       const engine = ExecutiveDecisionEngine();
 
-      final decision = engine.decide(branches);
+      final executiveState = aggregator.aggregate(branches);
+      final decision = engine.decide(executiveState.branches);
 
-      expect(decision.priorities, hasLength(3));
+      expect(executiveState.branches, hasLength(3));
 
       expect(
-        decision.priorities.map((priority) => priority.branch),
+        executiveState.branches.map((branch) => branch.branch),
         [
           'Growth OS',
           'Atlas Invest',
           'Minihus Thailand',
         ],
       );
+
+      expect(decision.priorities, hasLength(3));
 
       expect(
         decision.selectedPriority?.branch,
@@ -48,10 +53,7 @@ void main() {
         'Resolve historical data issue',
       );
 
-      expect(
-        decision.selectedPriority?.rank,
-        1,
-      );
+      expect(decision.selectedPriority?.rank, 1);
 
       expect(
         decision.rationale,
@@ -75,10 +77,13 @@ void main() {
         ),
       ];
 
+      const aggregator = ExecutiveStateAggregator();
       const engine = ExecutiveDecisionEngine();
 
-      final decision = engine.decide(branches);
+      final executiveState = aggregator.aggregate(branches);
+      final decision = engine.decide(executiveState.branches);
 
+      expect(executiveState.branches, hasLength(3));
       expect(decision.priorities, isEmpty);
       expect(decision.selectedPriority, isNull);
       expect(
