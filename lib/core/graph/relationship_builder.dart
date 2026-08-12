@@ -1,4 +1,4 @@
-import 'package:atlas/graph_edge.dart';
+import 'package:atlas/core/graph/graph_edge.dart';
 import 'package:atlas/import_reference.dart';
 
 /// Converts discovered import relationships into graph edges.

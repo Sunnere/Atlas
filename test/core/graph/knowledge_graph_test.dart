@@ -1,14 +1,14 @@
-import 'package:atlas/graph_builder.dart';
-import 'package:atlas/graph_edge.dart';
-import 'package:atlas/graph_metrics.dart';
-import 'package:atlas/graph_node.dart';
-import 'package:atlas/graph_query.dart';
+import 'package:atlas/core/graph/graph_builder.dart';
+import 'package:atlas/core/graph/graph_edge.dart';
+import 'package:atlas/core/graph/graph_metrics.dart';
+import 'package:atlas/core/graph/graph_node.dart';
+import 'package:atlas/core/graph/graph_query.dart';
 import 'package:atlas/import_reference.dart';
 import 'package:atlas/import_type.dart';
-import 'package:atlas/knowledge_graph.dart';
+import 'package:atlas/core/graph/knowledge_graph.dart';
 import 'package:atlas/core/models/repository_inventory.dart';
 import 'package:atlas/core/models/repository_item.dart';
-import 'package:atlas/relationship_builder.dart';
+import 'package:atlas/core/graph/relationship_builder.dart';
 import 'package:test/test.dart';
 
 void main() {

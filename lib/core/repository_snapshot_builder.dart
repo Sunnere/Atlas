@@ -1,5 +1,5 @@
 import '../import_reference.dart';
-import '../knowledge_graph.dart';
+import 'graph/knowledge_graph.dart';
 import 'models/repository_inventory.dart';
 import 'models/repository_stats.dart';
 import 'models/repository_model.dart';

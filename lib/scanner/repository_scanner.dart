@@ -2,10 +2,10 @@ import 'dart:io';
 
 import '../core/models/file_info.dart';
 import '../core/models/repository_model.dart';
-import '../graph_builder.dart';
+import '../core/graph/graph_builder.dart';
 import '../import_reference.dart';
 import '../import_scanner.dart';
-import '../knowledge_graph.dart';
+import '../core/graph/knowledge_graph.dart';
 import '../core/models/repository_inventory.dart';
 import '../core/models/repository_item.dart';
 import '../core/models/repository_stats.dart';
