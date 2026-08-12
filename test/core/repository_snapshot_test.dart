@@ -29,7 +29,16 @@ void main() {
       expect(snapshot.inventory.totalFiles, 2);
       expect(snapshot.inventory.models, hasLength(1));
       expect(snapshot.inventory.tests, hasLength(1));
-      expect(snapshot.inventory.items, same(inventory.items));
+
+      expect(
+        snapshot.inventory,
+        isNot(same(inventory)),
+      );
+
+      expect(
+        snapshot.inventory.items,
+        isNot(same(inventory.items)),
+      );
     });
   });
 }

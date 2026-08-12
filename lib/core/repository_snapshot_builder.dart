@@ -1,16 +1,15 @@
 import '../import_reference.dart';
 import 'graph/knowledge_graph.dart';
 import 'models/repository_inventory.dart';
+import 'models/repository_inventory_snapshot.dart';
 import 'models/repository_stats.dart';
 import 'models/repository_model.dart';
 import 'models/repository_snapshot.dart';
 
-/// Builds RepositorySnapshot instances.
+/// Builds immutable RepositorySnapshot instances.
 ///
 /// The builder combines the repository model with the engineering
 /// knowledge discovered during repository scanning.
-///
-/// Additional knowledge will be added in later migration steps.
 class RepositorySnapshotBuilder {
   const RepositorySnapshotBuilder();
 
@@ -21,18 +20,22 @@ class RepositorySnapshotBuilder {
     KnowledgeGraph? graph,
     RepositoryStats? stats,
   }) {
+    final inventorySnapshot = RepositoryInventorySnapshot(
+      items: inventory?.items ?? const [],
+    );
+
     return RepositorySnapshot(
       repository: repository,
       imports: List.unmodifiable(imports),
-      inventory: inventory ?? RepositoryInventory(),
+      inventory: inventorySnapshot,
       graph: graph ?? KnowledgeGraph(),
       stats: stats ??
           RepositoryStats(
             directories: repository.totalDirectories,
-            dartFiles:
-                repository.files.where((file) => file.extension == '.dart').length,
-            testFiles:
-                inventory?.tests.length ?? 0,
+            dartFiles: repository.files
+                .where((file) => file.extension == '.dart')
+                .length,
+            testFiles: inventory?.tests.length ?? 0,
             pubspecFiles: inventory?.configs
                     .where((item) => item.name == 'pubspec.yaml')
                     .length ??
