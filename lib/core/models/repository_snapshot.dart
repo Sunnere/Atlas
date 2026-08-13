@@ -1,8 +1,9 @@
-import '../../import_reference.dart';
 import '../graph/knowledge_graph.dart';
+import '../../import_reference.dart';
 import 'repository_inventory_snapshot.dart';
 import 'repository_model.dart';
 import 'repository_stats.dart';
+import 'snapshot_provenance.dart';
 
 class RepositorySnapshot {
   const RepositorySnapshot({
@@ -11,6 +12,7 @@ class RepositorySnapshot {
     required this.inventory,
     required this.graph,
     required this.stats,
+    required this.provenance,
   });
 
   final RepositoryModel repository;
@@ -18,4 +20,5 @@ class RepositorySnapshot {
   final RepositoryInventorySnapshot inventory;
   final KnowledgeGraph graph;
   final RepositoryStats stats;
+  final SnapshotProvenance provenance;
 }
