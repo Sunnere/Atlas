@@ -67,7 +67,7 @@ void main() {
           horizonDays: 2,
         );
 
-        expect(result.observations, 4);
+        expect(result.observations, 2);
       },
     );
 
@@ -102,7 +102,7 @@ void main() {
           observations,
           fold: 'TEMPORAL',
           testStart: DateTime.utc(2026, 1, 1),
-          testEnd: DateTime.utc(2026, 1, 2),
+          testEnd: DateTime.utc(2026, 1, 4),
           horizonDays: 2,
         );
 

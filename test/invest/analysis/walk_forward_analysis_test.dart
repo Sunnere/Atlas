@@ -33,7 +33,7 @@ void main() {
 
     expect(result.fold, 'FOLD-1');
     expect(result.horizonDays, 1);
-    expect(result.observations, 4);
+    expect(result.observations, 3);
   });
 
   test('returns one result per fold and horizon', () {

@@ -1,6 +1,7 @@
 import '../ase/atlas_signal_engine.dart';
 import '../../core/contracts/signal_contract.dart';
 import '../../core/observations/market_observation.dart';
+import '../temporal/evaluation_window.dart';
 
 class EconomicWalkForwardResult {
   final String fold;
@@ -54,13 +55,29 @@ class AtlasWalkForwardEconomicAnalyzer {
     var peakEquity = 1.0;
     var maxDrawdown = 0.0;
 
-    for (var i = 0;
-        i + horizonDays < observations.length;
-        i++) {
+    final timestamps = observations
+        .map((observation) => observation.timestamp)
+        .toList(growable: false);
+
+    for (var i = 0; i < observations.length; i++) {
       final timestamp = observations[i].timestamp;
 
       if (timestamp.isBefore(testStart) ||
           !timestamp.isBefore(testEnd)) {
+        continue;
+      }
+
+      EvaluationWindow window;
+
+      try {
+        window = EvaluationWindow.create(
+          timestamps: timestamps,
+          signalIndex: i,
+          horizon: horizonDays,
+          boundaryStart: testStart,
+          boundaryEnd: testEnd,
+        );
+      } on StateError {
         continue;
       }
 
@@ -74,12 +91,10 @@ class AtlasWalkForwardEconomicAnalyzer {
 
       var tradeGrowth = 1.0;
 
-      for (var j = i + 1;
-          j <= i + horizonDays;
-          j++) {
+      for (final index in window.outcomeIndices) {
         tradeGrowth *=
             1.0 -
-            observations[j].priceChangePercent / 100.0;
+            observations[index].priceChangePercent / 100.0;
       }
 
       final grossTradeReturn =

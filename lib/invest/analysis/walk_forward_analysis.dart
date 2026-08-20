@@ -1,6 +1,7 @@
 import '../ase/atlas_signal_engine.dart';
 import '../../core/contracts/signal_contract.dart';
 import '../../core/observations/market_observation.dart';
+import '../temporal/evaluation_window.dart';
 import 'forward_return_calculator.dart';
 
 class WalkForwardFold {
@@ -75,9 +76,11 @@ class AtlasWalkForwardAnalyzer {
     var sellReturn = 0.0;
     var nonSellReturn = 0.0;
 
-    for (var i = 0;
-        i + horizonDays < observations.length;
-        i++) {
+    final timestamps = observations
+        .map((observation) => observation.timestamp)
+        .toList(growable: false);
+
+    for (var i = 0; i < observations.length; i++) {
       final timestamp = observations[i].timestamp;
 
       if (timestamp.isBefore(fold.testStart) ||
@@ -85,21 +88,32 @@ class AtlasWalkForwardAnalyzer {
         continue;
       }
 
+      EvaluationWindow window;
+
+      try {
+        window = EvaluationWindow.create(
+          timestamps: timestamps,
+          signalIndex: i,
+          horizon: horizonDays,
+          boundaryStart: fold.testStart,
+          boundaryEnd: fold.testEnd,
+        );
+      } on StateError {
+        continue;
+      }
+
       observationsCount++;
 
       final forwardReturn = returnCalculator.calculate(
         observations,
-        startIndex: i,
-        horizon: horizonDays,
+        startIndex: window.signalIndex,
+        horizon: window.horizon,
       );
 
       final signal = engine.evaluate(observations[i]);
 
-      final isBuy =
-          signal.direction == SignalDirection.buy;
-
-      final isSell =
-          signal.direction == SignalDirection.sell;
+      final isBuy = signal.direction == SignalDirection.buy;
+      final isSell = signal.direction == SignalDirection.sell;
 
       if (isBuy) {
         buySignals++;
@@ -127,21 +141,13 @@ class AtlasWalkForwardAnalyzer {
       nonBuySignals: nonBuySignals,
       nonSellSignals: nonSellSignals,
       buyAverageReturnPercent:
-          buySignals == 0
-              ? 0
-              : buyReturn / buySignals,
+          buySignals == 0 ? 0 : buyReturn / buySignals,
       nonBuyAverageReturnPercent:
-          nonBuySignals == 0
-              ? 0
-              : nonBuyReturn / nonBuySignals,
+          nonBuySignals == 0 ? 0 : nonBuyReturn / nonBuySignals,
       sellAverageReturnPercent:
-          sellSignals == 0
-              ? 0
-              : sellReturn / sellSignals,
+          sellSignals == 0 ? 0 : sellReturn / sellSignals,
       nonSellAverageReturnPercent:
-          nonSellSignals == 0
-              ? 0
-              : nonSellReturn / nonSellSignals,
+          nonSellSignals == 0 ? 0 : nonSellReturn / nonSellSignals,
     );
   }
 

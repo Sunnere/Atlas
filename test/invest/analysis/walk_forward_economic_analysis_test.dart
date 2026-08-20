@@ -50,7 +50,7 @@ void main() {
       horizonDays: 2,
     );
 
-    expect(result.observations, 2);
+    expect(result.observations, 1);
     expect(result.trades, 1);
 
     expect(
